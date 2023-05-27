@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { chartPieDemo } from './chart-pie-demo';
-import { chartAreaDemo } from './chart-area-demo';
+import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet,RouterLink],// V15 standalone 後 RouterLink 可以從 RouterModule 獨立出來(其他也是)
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -15,7 +13,7 @@ export class AppComponent implements OnInit {
   title = 'demo2';
 
   ngOnInit(): void {
-    chartPieDemo();
-    chartAreaDemo();
+    // chartPieDemo();
+    // chartAreaDemo();
   }
 }
