@@ -1,10 +1,13 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
+    // 第一層 app component router-outlet進來後，LayoutComponent再看到router-outlet，會往 children 找載入
     component: LayoutComponent,
+    canActivate : [authGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
