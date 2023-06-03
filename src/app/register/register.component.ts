@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { forbiddenNameValidator, forbiddenNameValidator2, passwordValidator } from '../custom-validators';
 
 @Component({
   selector: 'app-register',
@@ -16,12 +17,12 @@ export class RegisterComponent {
   formSubmitted = false;
 
   form = this.formBuilder.group({
-    firstName: this.formBuilder.control('Mike'),
-    lastName: this.formBuilder.control('Huang'),
-    email: this.formBuilder.control(''),
+    firstName: this.formBuilder.control('Mike', [Validators.required, forbiddenNameValidator2(/Mike/)]),
+    lastName: this.formBuilder.control('Huang', [Validators.required , forbiddenNameValidator]),
+    email: this.formBuilder.control('', [Validators.required, Validators.email]),
     password: this.formBuilder.group({
-      password: this.formBuilder.control(''),
-      confirmPassword: this.formBuilder.control(''),
+      password: this.formBuilder.control('', passwordValidator),
+      confirmPassword: this.formBuilder.control('', Validators.compose([Validators.required, Validators.minLength(6)])),
     }),
     skills: this.formBuilder.array([
       this.formBuilder.control('HTML'),
@@ -42,5 +43,6 @@ export class RegisterComponent {
     console.log(this.form.value);
     console.log('firstName (form.get)', this.form.get(fieldName)?.value);
     console.log('firstName (form.controls)', this.form.controls.firstName.value);
+    this.form.reset({firstName: 'Alix'})
   }
 }

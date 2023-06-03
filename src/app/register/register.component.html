@@ -19,7 +19,17 @@
                   class="form-control form-control-user"
                   id="exampleFirstName"
                   placeholder="First Name">
+                  <div *ngIf="form.controls.firstName.invalid && form.controls.firstName.dirty">
+                    <p style="color: red"
+                      *ngIf="form.controls.firstName.getError('required')"
+                    >First Name is required</p>
+                    <p style="color: red"
+                      *ngIf="form.controls.firstName.getError('forbiddenName')"
+                    >Forbidden Name</p>
+                    <pre>{{ form.controls.firstName.errors | json }}</pre>
+                  </div>
               </div>
+
               <div class="col-sm-6">
                 <input
                   formControlName="lastName"
@@ -28,8 +38,18 @@
                   id="exampleLastName"
                   placeholder="Last Name"
                   >
+                  <div *ngIf="form.controls.lastName.invalid">
+                    <p style="color: red"
+                      *ngIf="form.controls.lastName.getError('required')"
+                    >Last Name is required</p>
+                    <p style="color: red"
+                      *ngIf="form.controls.lastName.getError('forbiddenName')"
+                    >Forbidden Name</p>
+                    <pre>{{ form.controls.lastName.errors | json }}</pre>
+                  </div>
               </div>
             </div>
+
             <div class="form-group">
               <input
                 formControlName="email"
@@ -46,6 +66,19 @@
                   class="form-control form-control-user"
                   id="exampleInputPassword"
                   placeholder="Password">
+                <p
+                  style="color: red"
+                  *ngIf="form.controls.password.controls.password.hasError('minlength')"
+                  >
+                  最小長度六
+                </p>
+                <p
+                  style="color: red"
+                  *ngIf="form.controls.password.controls.password.hasError('required') &&
+                  form.controls.password.controls.password.dirty"
+                  >
+                  password is required!
+                </p>
               </div>
               <div class="col-sm-6">
                 <input
@@ -54,7 +87,21 @@
                   class="form-control form-control-user"
                   id="exampleRepeatPassword"
                   placeholder="Repeat Password">
+                  <p
+                    style="color: red"
+                    *ngIf="form.controls.password.controls.confirmPassword.hasError('minlength')"
+                    >
+                    最小長度六
+                </p>
+                <p
+                    style="color: red"
+                    *ngIf="form.controls.password.controls.confirmPassword.hasError('required') &&
+                    form.controls.password.controls.confirmPassword.dirty"
+                    >
+                    confirmPassword is required!
+                </p>
               </div>
+
             </div>
 
             <div class="form-group row" formArrayName="skills">
