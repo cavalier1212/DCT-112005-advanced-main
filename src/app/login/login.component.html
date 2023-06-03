@@ -15,17 +15,20 @@
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                 </div>
-                <form class="user" #tForm="ngForm">
+                <form class="user" #tForm="ngForm" (ngSubmit)="loginSubmit($event, tForm.value)">
                   <div class="form-group">
                     <input
                     name="email"
                     ngModel
-                    #tName="ngModel"
+                    #tEmail="ngModel"
                     type="email"
                     class="form-control form-control-user"
                     id="exampleInputEmail"
                     aria-describedby="emailHelp"
-                    placeholder="Enter Email Address...">
+                    placeholder="Enter Email Address..."
+                    required
+                    email
+                    >
                   </div>
                   <div class="form-group">
                     <input
@@ -35,8 +38,38 @@
                     type="password"
                     class="form-control form-control-user"
                     id="exampleInputPassword"
-                    placeholder="Password">
+                    placeholder="Password"
+                    required
+                    minlength="6"
+                    maxlength="10"
+                    >
+                    <p *ngIf="tPassword.getError('minlength') && tPassword.dirty">minlength error</p>
                   </div>
+                  <div ngModelGroup="profile" #tGroup1="ngModelGroup">
+                    <div class="form-group">
+                      <input
+                      name="firstName"
+                      ngModel
+                      #tFirstName="ngModel"
+                      type="text"
+                      class="form-control form-control-user"
+                      id="firstName"
+                      placeholder="firstName"
+                      >
+                    </div>
+                    <div class="form-group">
+                      <input
+                      name="lastName"
+                      ngModel
+                      #tLastName="ngModel"
+                      type="text"
+                      class="form-control form-control-user"
+                      id="lastName"
+                      placeholder="lastName"
+                      >
+                    </div>
+                  </div>
+
                   <div class="form-group">
                     <div class="custom-control custom-checkbox small">
                       <input
@@ -48,13 +81,36 @@
                       id="customCheck">
                       <label class="custom-control-label" for="customCheck">Remember Me</label>
                     </div>
+
                   </div>
-                  <pre>
-                    {{ tForm.value | json}}
-                  </pre>
-                  <a href="javascript:void(0)" (click)="login(tForm.value)" class="btn btn-primary btn-user btn-block">
+                  <div class="form-group">
+                    <!-- [ngModelOptions]="{standalone: true}" 獨立於ngForm之外 -->
+                    <div class="custom-control custom-checkbox small">
+                      <input
+                      name="agreement"
+                      ngModel
+                      [ngModelOptions]="{standalone: true}"
+                      #tAgreement="ngModel"
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="agreement">
+                      <label class="custom-control-label" for="agreement">Agreement</label>
+                    </div>
+                  </div>
+                  <!-- tForm.value 會不包含disabled 欄位 -->
+                  <div>tForm.value</div>
+                  <pre>{{ tForm.value | json }}</pre>
+                  <div>tForm.control.getRawValue()</div>
+                  <!-- 如果要拿disabled 欄位，需要使用 getRawValue() -->
+                  <pre>{{ tForm.control.getRawValue() | json}}</pre>
+                  <button
+                  type="submit"
+                  href="javascript:void(0)"
+                  class="btn btn-primary btn-user btn-block"
+                  [disabled]="!tAgreement.value || tForm.invalid"
+                  >
                     Login
-                  </a>
+                  </button>
                   <hr>
                   <a href="index.html" class="btn btn-google btn-user btn-block">
                     <i class="fab fa-google fa-fw"></i> Login with Google
